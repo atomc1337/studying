@@ -1,18 +1,30 @@
-from selenium.webdriver.common.by import By #импорт поисковика для элементов
+from selenium.webdriver.common.by import By#импорт поисковика для элементов
+
 import time
-from pages.homepages import import HomePage
+from pages.homepages import HomePage
+from pages.product import ProductPage
 
 def test_open_s6(browser):
-    browser.get('https://demoblaze.com/index.html')
-    galaxy_s6 = browser.find_element(By.XPATH, value='//a[text()="Samsung galaxy s6"]')
-    galaxy_s6.click()
-    title = browser.find_element(By.CSS_SELECTOR, value='h2')
-    assert title.text == 'Samsung galaxy s6'
+    homepage = HomePage(browser)
+    homepage.open()
+    homepage.click_galaxy_s6()
+    product_page = ProductPage(browser)
+    product_page.check_title_is("Samsung galaxy s6")
+   # browser.get('https://demoblaze.com/index.html')
+   # galaxy_s6 = browser.find_element(By.XPATH, value='//a[text()="Samsung galaxy s6"]')
+   # galaxy_s6.click()
+    #title = browser.find_element(By.CSS_SELECTOR, value='h2')
+    #assert title.text == 'Samsung galaxy s6'
 
 def test_two_monitors(browser):
-    browser.get('https://demoblaze.com/index.html')
-    monitor_link = browser.find_element(By.CSS_SELECTOR, value='''[onclick="byCat('monitor')"]''')
-    monitor_link.click()
+    homepage = HomePage(browser)
+    homepage.open()
+    homepage.click_monitor()
+
+    #browser.get('https://demoblaze.com/index.html')
+    #monitor_link = browser.find_element(By.CSS_SELECTOR, value='''[onclick="byCat('monitor')"]''')
+    #monitor_link.click()
     time.sleep(2)
-    monitors = browser.find_element(By.CSS_SELECTOR, value='.card')
-    assert len(monitors) == 2
+    homepage.check_products_count(2)
+    #monitors = browser.find_element(By.CSS_SELECTOR, value='.card')
+   # assert len(monitors) == 2
